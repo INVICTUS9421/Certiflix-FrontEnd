@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <title>Login Page</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome</h2>
+        <p>Welcome to Certiflix verification portal.Please enter your email and password to get started.</p>
+        <div action="#">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+
+            <a href="#" class="forgot">Forgot Password?</a>
+
+            <button type="button" id="loginButton" class="login-btn">Login</button>
+        </div>
+
+        <p>Don't have an account? <a href="#" class="register-link">Register here</a></p>
+
+        <div class="separator"></div>
+
+        <p>Switch to admin portal? <a href="#" class="admin-link">Click here</a></p>
+    </div>
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword } from "firebase/authttps://www.gstatic.com/firebasejs/10.7.1/firebase-auth.jsh";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyC2ajkqvK-UIBHjo1S6jvJNGbIF8lCJDtg",
+        authDomain: "auth-42ad4.firebaseapp.com",
+        databaseURL: "https://auth-42ad4-default-rtdb.firebaseio.com",
+        projectId: "auth-42ad4",
+        storageBucket: "auth-42ad4.appspot.com",
+        messagingSenderId: "591464594964",
+        appId: "1:591464594964:web:6d3b390a7e4b4ee512b101"
+};
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth();
+
+    loginButton.addEventListener('click',(e) => {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+      // Signed up 
+      const user = userCredential.user;
+      // ...
+      alert('user created');
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+      alert(error.message);
+    });
+});
+  </script>
+</html>
+
