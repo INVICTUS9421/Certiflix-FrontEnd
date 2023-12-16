@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <label>Email</label><input type="email" id="emailbox"><br><br>
     <label>Image Name</label><input type="text" id="namebox"><label id="extlab"></label><br><br>
     <img id="myimg"><label id="proglab"></label><br><br>
     <button id="selbtn">Select Image</button>
@@ -44,6 +45,7 @@
         var files = [];
         var reader = new FileReader();
 
+        var emailbox = document.getElementById('emailbox');
         var namebox = document.getElementById('namebox');
         var extlab = document.getElementById('extlab');
         var myimg = document.getElementById('myimg');
@@ -98,6 +100,10 @@
 
         async function uploadImage(file) {
             const storage = getStorage(app);
+            if(!validateName())
+            {
+                alert('name cannot contain #,$,.,[,]');
+            }
             const storageRef = sRef(storage, `images/${file.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -119,21 +125,30 @@
             );
         }
 
+        //cannot contain # $ [ ] .
+        function validateName(){
+            var regex = /[\.#$\[\]]/
+            return !(regex.test(namebox.value));    
+        }
+
         function SaveURLtoRealtimeDB(URL) {
             var name = namebox.value;
             var ext = extlab.innerHTML;
+            var email = emailbox.value; // Get email value
 
-            set(ref(realdb, "ImagesLinks/" + name), {
+            set(ref(realdb, `ImagesLinks/${email}/${name}`), { // Include email in Realtime Database path
                 ImageName: (name + ext),
-                ImageUrl: URL
+                ImageUrl: URL,
+                //Email: email // Store email in metadata
             });
         }
 
         function GetUrlfromRealtimeDB() {
             var name = namebox.value;
+            var email = emailbox.value;
 
             // Reference to the location where you stored the data
-            var dbRef = ref(realdb, "ImagesLinks/" + name);
+            var dbRef = ref(realdb, `ImagesLinks/${email}/${name}`); // Include email in Realtime Database path
 
             // Retrieve the data from the database
             get(dbRef).then((snapshot) => {
