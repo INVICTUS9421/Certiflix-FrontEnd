@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Form</title>
+    <style>
+        body {
+			font-family: Arial, sans-serif;
+			background-image: url('bg.jpg');
+			background-size: cover;
+			background-position: center;
+		}
+
+		h1 {
+			font-size: 2rem;
+			text-align: center;
+			margin-top: 50px;
+			margin-bottom: 30px;
+			color: #fff;
+			text-shadow: 2px 2px #333;
+		}
+
+		form {
+			max-width: 600px;
+			margin: 0 auto;
+			background-color: #fff;
+			padding: 50px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			border-radius: 5px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+			color: #666;
+		}
+
+		input[type="text"], textarea {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			margin-bottom: 20px;
+			font-size: 16px;
+			color: #333;
+			resize: none;
+		}
+
+		input[type="file"] {
+			margin-bottom: 20px;
+		}
+
+		img {
+			max-width: 100%;
+			height: auto;
+			margin-bottom: 20px;
+		}
+
+		input[type="submit"], input[type="button"] {
+			background-color: #333;
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+
+		input[type="submit"]:hover, input[type="button"]:hover {
+			background-color: #666;
+		}
+    </style>
+</head>
+<body>
+    <h1>Product Form</h1>
+
+    <form enctype="multipart/form-data" method="post" action="submit.php">
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter product name">
+
+        <label for="description">Product Description:</label>
+        <textarea id="description" name="description" placeholder="Enter product description"></textarea>
+
+        <label for="images">Product Images:</label>
+        <input type="file" id="images" name="images" multiple accept="image/*">
+
+        <div id="preview-container"></div>
+
+        <input type="submit" value="Submit">
+        <input type="button" value="Back" onclick="history.back()">
+    </form>
+
+    <script>
+        // Preview images before upload
+        var imageInput = document.getElementById('images');
+        var previewContainer = document.getElementById('preview-container');
+
+        imageInput.addEventListener('change', function(event) {
+            previewContainer.innerHTML = ''; // Clear previous previews
+
+            for (var i = 0; i < event.target.files.length; i++) {
+                var preview = document.createElement('img');
+                preview.src = URL.createObjectURL(event.target.files[i]);
+                preview.alt = 'Product Image';
+                preview.style.maxWidth = '100%';
+                preview.style.height = 'auto';
+                preview.style.marginBottom = '20px';
+                previewContainer.appendChild(preview);
+            }
+        });
+    </script>
+</body>
+</html>

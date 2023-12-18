@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register Form</title>
-  <link rel="icon" href="../images/register.jpg" type="image/x-icon">
+  <link rel="icon" href="images/shopping.png" type="image/x-icon">
   <link rel="stylesheet" href="register.css">
   <script src="register.js" defer></script>
 </head>
@@ -67,6 +67,8 @@
       <br>
       <input type="email" id="email" placeholder="Email" required>
       <br>
+      <input type="text" id="phone" placeholder="Phone Number" required>
+      <br>
       <input type="text" id="org" placeholder="Organization Name" required>
       <br>
       <input type="text" id="address" placeholder="Address" required>
@@ -109,6 +111,7 @@
       var first_name = document.getElementById("first_name").value;
       var last_name = document.getElementById("last_name").value;
       var email = document.getElementById("email").value;
+      var phone = document.getElementById("phone").value; 
       var org = document.getElementById("org").value;
       var address = document.getElementById("address").value;
       var pincode = document.getElementById("pincode").value;
@@ -119,13 +122,14 @@
       .then((userCredential) => {
       // Signed up 
       const user = userCredential.user;
-      set(ref(database,'users/' + user.uid),{
+      set(ref(database,'users/' + phone),{
            first_name:first_name,
            last_name:last_name,
            email:email,
            org:org,
            address:address,
-           pincode:pincode
+           pincode:pincode,
+           phone :phone
         })
       alert('user created');
     })

@@ -89,12 +89,13 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth();
-    
-    document.getElementById('loginButton').addEventListener('click', (e) => {
-  var email = document.getElementById("email").value;
-  var password = document.getElementById("password").value;
 
-  signInWithEmailAndPassword(auth, email, password)
+    //document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('loginButton').addEventListener('click', (e) => {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
       const t1 = new Date();
@@ -107,7 +108,7 @@
       const userEmail = email;
 
       // Redirect to the dashboard page with the email parameter
-      window.location.href = 'dashboard.html?email=' + encodeURIComponent(userEmail);
+      window.location.href = 'dash try.html?email=' + encodeURIComponent(userEmail);
     })
     .catch((error) => {
       const errorCode = error.code;

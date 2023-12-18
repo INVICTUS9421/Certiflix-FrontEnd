@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Image Retriever</title>
+</head>
+<body>
+    <h1>Firebase Image Retriever</h1>
+
+    <input type="text" id="imageNameInput" placeholder="Enter Image Name">
+    <button onclick="retrieveImage()">Retrieve Image</button>
+
+    <div id="imageContainer"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-storage.js"></script>
+    <script>
+        // Initialize Firebase with your project config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAFhcQBJw7090-fJaR0K7BeVPnlRnKrYwM",
+            authDomain: "authentication-7890b.firebaseapp.com",
+            databaseURL: "https://authentication-7890b-default-rtdb.firebaseio.com",
+            projectId: "authentication-7890b",
+            storageBucket: "authentication-7890b.appspot.com",
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the storage service
+        const storage = firebase.storage();
+
+        // Function to retrieve image by name from Firebase Storage
+        function retrieveImage() {
+            const imageNameInput = document.getElementById('imageNameInput').value;
+            const imageContainer = document.getElementById('imageContainer');
+
+            // Get a reference to the image in storage
+            const storageRef = storage.ref(`${imageNameInput}`);
+
+            // Get the download URL of the image
+            storageRef.getDownloadURL().then((downloadURL) => {
+                // Display the image
+                const imgElement = document.createElement('img');
+                imgElement.src = downloadURL;
+                imgElement.alt = 'Retrieved Image';
+                imgElement.style.width = '400px';
+
+                // Clear previous image
+                imageContainer.innerHTML = '';
+
+                imageContainer.appendChild(imgElement);
+            }).catch((error) => {
+                console.error('Error retrieving image:', error);
+                alert('Image not found or error occurred.');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload and Retrieve Images from Firebase</title>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyAFhcQBJw7090-fJaR0K7BeVPnlRnKrYwM",
+        authDomain: "authentication-7890b.firebaseapp.com",
+        databaseURL: "https://authentication-7890b-default-rtdb.firebaseio.com",
+        projectId: "authentication-7890b",
+        storageBucket: "authentication-7890b.appspot.com",
+        messagingSenderId: "527223083634",
+        appId: "1:527223083634:web:4b45065de2e93a1be4e8eb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const storage = firebase.storage();
+    const database = firebase.database();
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      const name = document.getElementById('name-input').value;
+
+      const fileName = generateUniqueFileName(file);
+
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(fileName);
+      const uploadTask = fileRef.put(file);
+
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, null, null, () => {
+        const imageRef = database.ref('images').push();
+        imageRef.set({
+          name: name,
+          fileName: fileName,
+          url: uploadTask.snapshot.downloadURL,
+        });
+        alert('Image uploaded successfully!');
+      });
+    }
+
+    function generateUniqueFileName(file) {
+        const extension = file.name.split('.').pop();
+        const uniqueId = Math.random().toString(36).substr(2, 10);
+        const filename = `${uniqueId}_${Date.now()}.${extension}`;
+        return filename;
+    }
+
+    function retrieveImage() {
+      const email = document.getElementById('email-input').value;
+      const imageName = document.getElementById('image-name-input').value;
+
+      const imagesRef = database.ref('images');
+      imagesRef.orderByChild('name').equalTo(email).once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          const childData = childSnapshot.val();
+          if (childData.fileName === imageName) {
+            const imageRef = storage.ref(childData.fileName);
+            imageRef.getDownloadURL().then((url) => {
+              const img = document.getElementById('retrieved-image');
+              img.src = url;
+              alert('Image retrieved successfully!');
+            }).catch((error) => {
+              alert(error.message);
+            });
+          }
+        });
+      });
+    }
+
+    function displaySelectedImage(event) {
+      const file = event.target.files[0];
+      const img = document.getElementById('uploaded-image');
+      img.src = URL.createObjectURL(file);
+      img.onload = function() {
+        URL.revokeObjectURL(img.src); // Free memory
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Upload and Retrieve Images from Firebase</h1>
+  <form>
+    <label for="name-input">Name:</label>
+    <input type="text" id="name-input" required>
+    <br><br>
+    <label for="file-input">Image:</label>
+    <input type="file" id="file-input" accept="image/*" required onchange="displaySelectedImage(event)">
+    <br><br>
+    <img id="uploaded-image" src="">
+    <br><br>
+    <input type="button" value="Upload" onclick="handleFileUpload(event)">
+  </form>
+  <br>
+  <form>
+    <label for="email-input">Email:</label>
+    <input type="email" id="email-input" required>
+    <br><br>
+    <label for="image-name-input">Image Name:</label>
+    <input type="text" id="image-name-input" required>
+    <br><br>
+    <input type="button" value="Retrieve" onclick="retrieveImage()">
+  </form>
+  <br>
+  <img id="retrieved-image" src="">
+</body>
+</html>
