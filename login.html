@@ -118,15 +118,9 @@
           });
           sessionStorage.setItem("email", email);
           sessionStorage.setItem("isLoggedIn", "true");
-          //alert('session added');
           alert('user logged in');
 
-           window.location.href = 'pwork3.html';
-          // Assume you have obtained the user's email during the login process
-          //const userEmail = email;
-          
-          // Redirect to the dashboard page with the email parameter
-          //window.location.href = 'dash try.html?email=' + encodeURIComponent(userEmail);
+           window.location.href = 'dashboard v1.html';
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -136,7 +130,7 @@
     });
     registerButton.addEventListener('click', () => {
         // Redirect to the login page (adjust the URL accordingly)
-        window.location.href = 'login session.html';
+        window.location.href = 'register.html';
   });
       </script>
 </body>

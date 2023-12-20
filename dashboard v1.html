@@ -147,26 +147,20 @@
   <script type="module">
     // Retrieve session details from sessionStorage
     const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    const userEmail = sessionStorage.getItem("username");
+    const userEmail = sessionStorage.getItem("email");
 
     // Check if the user is logged in
     if (isLoggedIn === "true" && userEmail) {
       // Update the user email in the dashboard
       document.getElementById("userEmail").innerText = userEmail;
+
+      //alert(userEmail);
+
     } else {
       // If not logged in, redirect to the login page
       window.location.href = 'login.html';
     }
 
-    // Logout function
-    function logout() {
-      // Clear session details in sessionStorage
-      sessionStorage.removeItem("isLoggedIn");
-      sessionStorage.removeItem("username");
-
-      // Redirect to the login page
-      window.location.href = 'login.html';
-    }
   </script>
 </head>
 
@@ -174,13 +168,13 @@
   <header>
     <h1>Certiflix</h1>
     <div class="user-profile" onclick="toggleDropdown()">
-      <img src="abstract-user-flat-4.png" alt="User Profile Picture">
+      <img src="images/abstract-user-flat-4.png" alt="User Profile Picture">
       <span class="username"><?php echo htmlspecialchars($userName); ?></span>
       <div class="user-dropdown" id="userDropdown">
         <ul>
           <li><a href="#">My Products</a></li>
         </ul>
-        <button onclick="logout()">Logout</button>
+        <a href="login.html" class="button">Logout</a>
       </div>
     </div>
   </header>
@@ -208,10 +202,10 @@
         completeness, and relevance of product images displayed on online marketplaces 
         and e-commerce platforms.</p>
       <p>To upload your product</p>
-      <button type="button" id="uploadButton" class="login-btn" style="background-color: #4a5cb8; color: white; border-radius: 25px; border: none; padding: 10px 30px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;"
-        onclick="window.location.href='upload product.html'">
-        Upload
-      </button>
+      <a href="UI(Product)/upload product.html" class="login-btn"
+      style="background-color: #4a5cb8; color: white; border-radius: 25px; border: none; padding: 10px 30px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">
+      Upload Product
+      </a>
     </section>
   </main> 
 
