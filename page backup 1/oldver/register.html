@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="register.css">
+    <script src="register.js" defer></script>
+    <title>User Registration</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Up</h1>
+        <div class="registration-form">
+            <div class="form-group">
+                <label for="first_name">First Name:</label><span class="required">*</span>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label><span class="required">*</span>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label><span class="required">*</span>
+                <input type="email" id="email" name="email" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="org">Organisation Name:</label><span class="required">*</span>
+                <input type="text" id="org" name="org" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="address">Address:</label><span class="required">*</span>
+                <input type="text" id="address" name="address" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="pincode">Pincode:</label><span class="required">*</span>
+                <input type="text" id="pincode" name="pincode" required>
+            </div>
+        
+        
+            <div class="form-group">
+                <label for="phone">Phone Number:</label><span class="required">*</span>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="password">Password:</label><span class="required">*</span>
+                <input type="password" id="password" name="password" required>
+                <span class="eye-icon" onclick="togglePasswordVisibility('password')">&#128065;</span>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label><span class="required">*</span>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+                <span class="eye-icon" onclick="togglePasswordVisibility('confirm_password')">&#128065;</span>
+            </div>    
+           
+           
+            <div class="tc-link">
+                <input type="checkbox" id="agree_terms" required>
+                I accept the <a href="Terms.php">Terms and Conditions</a>
+            </div>
+        
+            <div class="form-group">
+                <button type="button" id="loginButton" class="login-btn">Register</button>
+            </div>
+        </div>
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login</a>
+        </div>
+    </div>
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase,set,ref } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword } from "firebase/authttps://www.gstatic.com/firebasejs/10.7.1/firebase-auth.jsh";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyC2ajkqvK-UIBHjo1S6jvJNGbIF8lCJDtg",
+        authDomain: "auth-42ad4.firebaseapp.com",
+        databaseURL: "https://auth-42ad4-default-rtdb.firebaseio.com",
+        projectId: "auth-42ad4",
+        storageBucket: "auth-42ad4.appspot.com",
+        messagingSenderId: "591464594964",
+        appId: "1:591464594964:web:6d3b390a7e4b4ee512b101"
+    };
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth();
+
+    // Move your event listener inside the script tag
+    document.getElementById("loginButton").addEventListener('click', (e) => {
+    var fname = document.getElementById("first_name").value;
+    var lname = document.getElementById("last_name").value;
+    var email = document.getElementById("email").value;
+    var org = document.getElementById("org").value;
+    var address = document.getElementById("address").value;
+    var pincode = document.getElementById("pincode").value;
+    var phone = document.getElementById("phone").value;
+    var password = document.getElementById("confirm_password").value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+        // ...
+        set(ref(database,'users/' + user.uid),{
+            fname:fname,
+            lname:lname,
+            email:email,
+            orgname:orgname,
+            address:address,
+            pincode:pincode
+        })
+        alert('user created');
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+        alert(errorMessage);
+    });
+});
+    </script>
+</html>
+
+
