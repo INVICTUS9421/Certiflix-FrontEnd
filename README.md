@@ -1,0 +1,1 @@
+Certiflix is a project which enables user to check if products available online are authentic. For connectivity I have used firebase. The repository consists of webpages along with firebase connectivity.
